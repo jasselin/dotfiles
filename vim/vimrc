@@ -26,7 +26,7 @@
         set termguicolors
     endif
 
-    syntax on
+    syntax enable
     color dracula
     let g:airline_theme='dracula'
 
@@ -70,7 +70,7 @@
     let g:tagbar_width = 30
 
 " vimrc shortcut and autoreload
-    map <leader>vimrc :tabe ~/dotfiles/vim/.vimrc<CR>
+    map <leader>vimrc :tabe $MYVIMRC<CR>
     autocmd bufwritepost init.vim source $MYVIMRC
 
 " vim-markdown
