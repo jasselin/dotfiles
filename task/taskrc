@@ -31,3 +31,7 @@ include /usr/share/taskwarrior/solarized-dark-256.theme
 
 uda.estimate.type=numeric
 uda.estimate.label=Estimate
+report.estimate.description=Estimation de projet
+report.estimate.columns=id,description,estimate
+report.estimate.labels=Id,Description,Est.
+report.estimate.sort=entry+
