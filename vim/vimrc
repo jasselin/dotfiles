@@ -9,6 +9,8 @@
     Plug 'preservim/nerdtree'
     Plug 'preservim/nerdcommenter'
     Plug 'preservim/tagbar'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
 
     " Vimwiki
     Plug 'vimwiki/vimwiki'
@@ -68,6 +70,9 @@
 " Tagbar
     nmap <leader>b :TagbarToggle<CR>
     let g:tagbar_width = 30
+
+" fzf
+    nnoremap <C-p> :<C-u>FZF<CR> 
 
 " vimrc shortcut and autoreload
     map <leader>vimrc :tabe $MYVIMRC<CR>
