@@ -25,13 +25,21 @@ data.location=~/vimwiki/.task
 #include /usr/share/taskwarrior/dark-yellow-green.theme
 #include /usr/share/taskwarrior/dark-gray-256.theme
 #include /usr/share/taskwarrior/dark-gray-blue-256.theme
-include /usr/share/taskwarrior/solarized-dark-256.theme
+#include /usr/share/taskwarrior/solarized-dark-256.theme
 #include /usr/share/taskwarrior/solarized-light-256.theme
 #include /usr/share/taskwarrior/no-color.theme
+#
+search.case.sensitive=no
 
-uda.estimate.type=numeric
 uda.estimate.label=Estimate
-report.estimate.description=Estimation de projet
-report.estimate.columns=id,description,estimate
-report.estimate.labels=Id,Description,Est.
-report.estimate.sort=entry+
+uda.estimate.type=numeric
+
+report._estimate.description=Estimation de projet
+report._estimate.columns=id,description,estimate
+report._estimate.labels=Id,Description,Est.
+report._estimate.filter=status:pending
+report._estimate.sort=entry+
+
+report._estimatesum.description=Sommaire estimation de projet
+report._estimatesum.columns=estimate
+report._estimatesum.filter=status:pending

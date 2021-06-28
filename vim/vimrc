@@ -3,6 +3,8 @@
 
     " Themes
     Plug 'dracula/vim', { 'as': 'dracula' }
+    Plug 'arcticicestudio/nord-vim'
+    Plug 'morhetz/gruvbox'
 
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -29,8 +31,9 @@
     endif
 
     syntax enable
-    color dracula
-    let g:airline_theme='dracula'
+    set background=dark
+    color gruvbox
+    let g:airline_theme='gruvbox'
 
 " Other configs
     set nobackup
@@ -76,7 +79,7 @@
 
 " vimrc shortcut and autoreload
     map <leader>vimrc :tabe $MYVIMRC<CR>
-    autocmd bufwritepost init.vim source $MYVIMRC
+    autocmd bufwritepost .vimrc source $MYVIMRC
 
 " vim-markdown
     let g:markdown_fenced_languages = ['javascript', 'bash', 'css']
@@ -100,5 +103,5 @@
     :command Q q
 
 " Fixes for French-Canadian keyboard layout
-    nnoremap ? ^
-    nnoremap é ?
+    nnoremap é /
+    nnoremap É ?
