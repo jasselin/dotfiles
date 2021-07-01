@@ -1,0 +1,56 @@
+;; Package manager
+(require 'package)
+ 
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+ 
+(setq package-enable-at-startup nil)
+(package-initialize)
+
+;; use-package
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+;; disable splash screen and startup message
+(setq inhibit-startup-message t) 
+(setq initial-scratch-message nil)
+
+;; evil-mode
+(unless (package-installed-p 'evil)
+  (package-install 'evil))
+
+(use-package evil
+    :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (evil-mode))
+
+(use-package evil-collection
+    :after evil
+    :ensure t
+    :config
+    (evil-collection-init))
+
+;; remap ; to :
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+  ;;(define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
+
+;; theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'dracula t)
+
+;; font
+(set-frame-font "Inconsolata-12")
+
+;; projectile
+(projectile-mode +1)
+;; Recommended keymap prefix on macOS
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+;; Recommended keymap prefix on Windows/Linux
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
+;; Default directory
+(cd "~/")
