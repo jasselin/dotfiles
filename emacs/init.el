@@ -46,23 +46,34 @@
 (global-set-key (kbd "C-j") 'forward-paragraph)
 (global-set-key (kbd "C-k") 'backward-paragraph)
 
+;; orgmode
+(setq org-return-follows-link t)
+
 ;; general keybindings
 (use-package general
   :ensure t
   :config
   (general-evil-setup t))
 
+(nvmap
+  "C-j"           'org-next-link
+  "C-k"           'org-previous-link
+  "C-<backspace>" '(switch-to-prev-buffer :which-key "previous buffer")
+  )
+
 (nvmap :prefix "SPC"
-  "f"   '(helm-projectile-rg :which-key "ripgrep")
-  "TAB" '(switch-to-prev-buffer :which-key "previous buffer")
-  "SPC" '(helm-M-x :which-key "M-x")
-  "pf"  '(helm-projectile-find-file :which-key "find files")
-  "pp"  '(helm-projectile-switch-project :which-key "switch project")
-  "pb"  '(helm-projectile-switch-to-buffer :which-key "switch buffer")
-  "pr"  '(helm-show-kill-ring :which-key "show kill ring")
-  "qq"  '(kill-emacs :which-key "quit")
+  "f"           '(helm-projectile-rg :which-key "ripgrep")
+  "SPC"         '(helm-M-x :which-key "M-x")
+
+  ;; projectile
+  "p f"         '(helm-projectile-find-file :which-key "find files")
+  "p p"         '(helm-projectile-switch-project :which-key "switch project")
+  "p b"         '(helm-projectile-switch-to-buffer :which-key "switch buffer")
+  "p r"         '(helm-show-kill-ring :which-key "show kill ring")
+
   ;; NeoTree
-  "n"  '(neotree-toggle :which-key "toggle neotree")
+  "q"  '(neotree-toggle :which-key "toggle neotree")
+
   ;; init.el reload
   "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
   )
@@ -85,9 +96,20 @@
   :config
   (evil-collection-init))
 
+(use-package evil-org
+  :commands evil-org-mode
+  :after org
+  :init
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  :config
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme '(textobjects insert navigation additional shift todo heading)))))
+
 ;; remap ; to :
 (with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+  (define-key evil-motion-state-map (kbd "RET") nil)     ; remaps RET to nothing to allow it to open links in org mode
+  (define-key evil-motion-state-map (kbd ";") 'evil-ex)) ; remaps ; to :
 
 (use-package anzu
   :ensure t
@@ -100,6 +122,10 @@
 (use-package which-key
   :ensure t
   :init (which-key-mode))
+
+(use-package org-superstar
+  :ensure t
+  :hook (org-mode . org-superstar-mode))
 
 ;; all-the-icons
 ;; must run before: M-x all-the-icons-install-fonts
@@ -124,7 +150,7 @@
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;;(doom-themes-neotree-config)
+  (doom-themes-neotree-config)
   ;; or for treemacs users
   ;;(setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   ;;(doom-themes-treemacs-config)
@@ -138,18 +164,24 @@
 
 ;; dashboard
 (use-package dashboard
+  ;:init
   :ensure t
   :init
   (setq dashboard-set-heading-icons t
-	dashboard-set-file-icons t)
+	dashboard-set-file-icons t
+	dashboard-banner-logo-title "Welcome to Emacs Dashboard"
+	dashboard-startup-banner 'logo
+	dashboard-items '((projects . 5)
+			  (recents . 5)
+			  (agenda . 5)
+			  (bookmarks . 5)
+			  (registers . 5)))
   :config
   (dashboard-setup-startup-hook))
 
 ;; projectile
 (use-package projectile
   :ensure t
-  :init
-  (setq projectile-require-project-root nil)
   :config
   (projectile-mode 1))
 
@@ -229,7 +261,7 @@
  '(helm-completion-style 'helm)
  '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(company-lsp company lsp-ui lsp-mode flycheck helm-projectile helm-rg anzu projectile dashboard doom-modeline doom-themes all-the-icons which-key evil-collection evil general use-package)))
+   '(org-bullets company-lsp company lsp-ui lsp-mode flycheck helm-projectile helm-rg anzu projectile dashboard doom-modeline doom-themes all-the-icons which-key evil-collection evil general use-package)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
