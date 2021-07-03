@@ -32,7 +32,7 @@
 (scroll-bar-mode -1)
 (global-linum-mode 1)
 (global-visual-line-mode t)
-(set-frame-font "DejaVu Sans Mono-10" t)
+(set-frame-font "DejaVu Sans Mono-11" t)
 
 ;; Disable prompt for:
 ;; Symbolic link to Git-controlled source file; follow link?
@@ -56,20 +56,29 @@
   (general-evil-setup t))
 
 (nvmap
-  "C-j"           'org-next-link
-  "C-k"           'org-previous-link
+  "é"             'evil-search-forward   ; cf layout fix for /
+  "É"             'evil-search-backward  ; cf layout fix for ?
+  ;"C-j"           'org-next-link
+  ;"C-k"           'org-previous-link
   "C-<backspace>" '(switch-to-prev-buffer :which-key "previous buffer")
+  "C-é"           'comment-region
   )
 
 (nvmap :prefix "SPC"
-  "f"           '(helm-projectile-rg :which-key "ripgrep")
-  "SPC"         '(helm-M-x :which-key "M-x")
+  ;; "f"           '(helm-projectile-rg :which-key "ripgrep")
+  ;; "SPC"         '(helm-M-x :which-key "M-x")
 
   ;; projectile
-  "p f"         '(helm-projectile-find-file :which-key "find files")
-  "p p"         '(helm-projectile-switch-project :which-key "switch project")
-  "p b"         '(helm-projectile-switch-to-buffer :which-key "switch buffer")
-  "p r"         '(helm-show-kill-ring :which-key "show kill ring")
+  ;; "p f"         '(helm-projectile-find-file :which-key "find files")
+  ;; "p p"         '(helm-projectile-switch-project :which-key "switch project")
+  ;; "p b"         '(helm-projectile-switch-to-buffer :which-key "switch buffer")
+  ;; "p r"         '(helm-show-kill-ring :which-key "show kill ring")
+
+  "s" 'split-window-below :which-key "Horizontal split"
+  "v" 'split-window-right :which-key "Vertical split"
+
+  "f" 'counsel-projectile-rg
+  "p" 'projectile-switch-project
 
   ;; NeoTree
   "q"  '(neotree-toggle :which-key "toggle neotree")
@@ -111,12 +120,12 @@
   (define-key evil-motion-state-map (kbd "RET") nil)     ; remaps RET to nothing to allow it to open links in org mode
   (define-key evil-motion-state-map (kbd ";") 'evil-ex)) ; remaps ; to :
 
-(use-package anzu
-  :ensure t
-  :config
-  (global-anzu-mode 1)
-  (global-set-key [remap query-replace-regex] 'anzu-query-replace-regexp)
-  (global-set-key [remap query-replace] 'anzu-query-replace))
+;; (use-package anzu
+;;   :ensure t
+;;   :config
+;;   (global-anzu-mode 1)
+;;   (global-set-key [remap query-replace-regex] 'anzu-query-replace-regexp)
+;;   (global-set-key [remap query-replace] 'anzu-query-replace))
 
 ;; which-key
 (use-package which-key
@@ -185,21 +194,55 @@
   :config
   (projectile-mode 1))
 
-;; helm
-(use-package helm
+;; ivy, counsel, swiper
+(use-package counsel
   :ensure t
-  :config
-  (helm-mode 1))
+  :after ivy
+  :config (counsel-mode))
 
-(use-package helm-rg
-  :ensure t)
-
-(use-package helm-projectile
+(use-package ivy :demand
   :ensure t
+  :defer 0.1
   :init
-  (setq helm-projectile-fuzzy-match t)
+  (setq ivy-initial-inputs-alist nil)
+  :custom
+  (setq ivy-use-virtual-buffers t
+	ivy-count-format "%d/%ddd ")
   :config
-  (helm-projectile-on))
+  (ivy-mode))
+
+(use-package ivy-rich
+  :ensure t
+  :after ivy
+  :custom
+  (ivy-virtual-abbreviate 'full
+   ivy-rich-switch-buffer-align-virtual-buffer t
+   ivy-rich-path-style 'abbrev)
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+			       'ivy-rich-switch-buffer-transformer)
+  (ivy-rich-mode 1))
+			  
+(use-package swiper
+  :ensure t
+  :after ivy)
+  
+
+;; ;; helm
+;; (use-package helm
+;;   :ensure t
+;;   :config
+;;   (helm-mode 1))
+
+;; (use-package helm-rg
+;;   :ensure t)
+
+;; (use-package helm-projectile
+;;   :ensure t
+;;   :init
+;;   (setq helm-projectile-fuzzy-match t)
+;;   :config
+;;   (helm-projectile-on))
 
 ;; Flycheck
 ;; (use-package flycheck
@@ -258,10 +301,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(helm-completion-style 'helm)
- '(helm-minibuffer-history-key "M-p")
  '(package-selected-packages
-   '(org-bullets company-lsp company lsp-ui lsp-mode flycheck helm-projectile helm-rg anzu projectile dashboard doom-modeline doom-themes all-the-icons which-key evil-collection evil general use-package)))
+   '(ivy org-bullets company-lsp company lsp-ui lsp-mode flycheck projectile dashboard doom-modeline doom-themes all-the-icons which-key evil-collection evil general use-package)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
