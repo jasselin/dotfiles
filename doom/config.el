@@ -54,13 +54,13 @@
 ;; they are implemented.
 
 (map!
-  :nv ";" #'evil-ex
-  :nv "é" #'evil-search-forward
-  :nv "É" #'evil-search-backward
-  (:leader
-    "#" #'previous-buffer
-    )
+ :nv ";" #'evil-ex
+ :nv "é" #'evil-search-forward
+ :nv "É" #'evil-search-backward
+ (:leader
+  "#" #'previous-buffer
   )
+ )
 
 (map! :map general-override-mode-map
       :n "C-j" #'forward-paragraph
@@ -68,5 +68,38 @@
 )
 
 (after! org
-  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$")))
-a
+  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
+                                   (todo . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
+                                   (tags . " %i %-12:c")
+                                   (search . " %i %-12:c")))
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "HOLD(h)" "PROJ(p)" "OBJ(o)"
+                    "|"
+                    "DONE(d)" "KILL(k)")))
+  (setq org-todo-keyword-faces
+        '(("NEXT" . +org-todo-active)
+          ("WAIT" . +org-todo-onhold)
+          ("HOLD" . +org-todo-onhold)
+          ("PROJ" . +org-todo-project)
+          ("OBJ" . +org-todo-project)
+          ("KILL" . +org-todo-cancel)))
+  )
+
+(use-package! org-journal
+  :after org
+  :config
+  ;; (customize-set-variable 'org-journal-dir (concat org-roam-directory "journal"))
+  (customize-set-variable 'org-journal-file-format "%Y-%m-%d.org")
+  (customize-set-variable 'org-journal-date-prefix "#+TITLE: ")
+  (customize-set-variable 'org-journal-time-prefix "* ")
+  (customize-set-variable 'org-journal-time-format "")
+  ;; (customize-set-variable 'org-journal-carryover-items "TODO=\"TODO\"")
+  (customize-set-variable 'org-journal-date-format "%Y-%m-%d")
+  (map! :leader
+        (:prefix-map ("n" . "notes")
+         (:prefix ("j" . "journal")
+          :desc "Today" "t" #'org-journal-today)))
+  (defun org-journal-today ()
+    (interactive)
+    (org-journal-new-entry t)))
