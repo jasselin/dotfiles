@@ -69,10 +69,10 @@
 
 (after! org
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-  (setq org-agenda-prefix-format '((agenda . " %i %-12:c%?-12t% s")
-                                   (todo . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
-                                   (tags . " %i %-12:c")
-                                   (search . " %i %-12:c")))
+  (setq org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
+                                   (todo   . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
+                                   (tags   . " %i %-20:c")
+                                   (search . " %i %-20:c")))
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "HOLD(h)" "PROJ(p)" "OBJ(o)"
                     "|"
