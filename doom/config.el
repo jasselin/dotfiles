@@ -67,6 +67,8 @@
       :n "C-k" #'backward-paragraph
 )
 
+(remove-hook 'doom-first-input-hook #'evil-snipe-mode)
+
 (after! org
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
   (setq org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
@@ -74,15 +76,16 @@
                                    (tags   . " %i %-20:c")
                                    (search . " %i %-20:c")))
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "HOLD(h)" "PROJ(p)" "OBJ(o)"
+        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "HOLD(h)" "PROJ(p)" "OBJP(o)" "GAZL(g)"
                     "|"
                     "DONE(d)" "KILL(k)")))
   (setq org-todo-keyword-faces
         '(("NEXT" . +org-todo-active)
+          ("GAZL" . "purple")
           ("WAIT" . +org-todo-onhold)
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
-          ("OBJ" . +org-todo-project)
+          ("OBJP" . +org-todo-project)
           ("KILL" . +org-todo-cancel)))
   )
 
@@ -103,3 +106,5 @@
   (defun org-journal-today ()
     (interactive)
     (org-journal-new-entry t)))
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
