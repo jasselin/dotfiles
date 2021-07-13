@@ -65,7 +65,7 @@
 (map! :map general-override-mode-map
       :n "C-j" #'forward-paragraph
       :n "C-k" #'backward-paragraph
-)
+      )
 
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
@@ -75,17 +75,28 @@
                                    (todo   . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
                                    (tags   . " %i %-20:c")
                                    (search . " %i %-20:c")))
+
+  ;(setq org-agenda-span 'day)
+
+  (setq org-agenda-custom-commands
+        '(("n" "Agenda / INTR / ACTV / NEXT"
+           ((agenda "" nil)
+            (todo "INTR" nil)
+            (todo "ACTV" nil)
+            (todo "NEXT" nil))
+           nil)))
+
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "HOLD(h)" "PROJ(p)" "OBJP(o)" "GAZL(g)"
+        '((sequence "TODO(t)" "NEXT(n)" "INTR(i)" "ACTV(a)" "WAIT(w@/!)" "HOLD(h@/!)" "PROJ(p)"
                     "|"
-                    "DONE(d)" "KILL(k)")))
+                    "DONE(d!)" "KILL(k@/!)")))
+
   (setq org-todo-keyword-faces
         '(("NEXT" . +org-todo-active)
-          ("GAZL" . "purple")
+          ("ACTV" . +org-todo-active)
           ("WAIT" . +org-todo-onhold)
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
-          ("OBJP" . +org-todo-project)
           ("KILL" . +org-todo-cancel)))
   )
 
@@ -107,4 +118,4 @@
     (interactive)
     (org-journal-new-entry t)))
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
