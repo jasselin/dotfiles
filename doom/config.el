@@ -71,25 +71,51 @@
 
 (after! org
   (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
+
+  (setq org-log-done 'time) ; CLOSED timestamp
+
   (setq org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
                                    (todo   . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
                                    (tags   . " %i %-20:c")
                                    (search . " %i %-20:c")))
-
-  ;(setq org-agenda-span 'day)
+;; (setq org-agenda-custom-commands
+;;              '(("W" "Weekly review"
+;;                agenda ""
+;;                ((org-agenda-start-day nil)
+;;                 (org-agenda-span 14)
+;;                 (org-agenda-start-on-weekday 1)
+;;                 (org-agenda-start-with-log-mode '(closed clock state))
+;;                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "^\\*\\* DONE "))))))
 
   (setq org-agenda-custom-commands
-        '(("n" "Agenda / INTR / ACTV / NEXT"
-           ((agenda "" nil)
-            (todo "INTR" nil)
-            (todo "ACTV" nil)
-            (todo "NEXT" nil))
-           nil)))
+        '(("n" "Agenda"
+           (
+               (agenda ""
+               ((org-agenda-span 1)
+                (org-agenda-start-day nil)
+                (org-agenda-start-with-log-mode t)
+                (org-agenda-log-mode-items '(closed clock state))))
+
+            ;; (todo "" ((org-agenda-overriding-header "Terminé")
+            ;;           ))
+
+            (todo "TODO" ((org-agenda-overriding-header "Inbox")
+                          (org-agenda-files '("~/org/inbox.org"))))
+
+            (todo "WAIT" ((org-agenda-overriding-header "En attente")))
+
+            (todo "ACTV" ((org-agenda-overriding-header "En cours")))
+
+            (todo "NEXT" ((org-agenda-overriding-header "Next")))
+            )
+           nil))
+
+        )
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "INTR(i)" "ACTV(a)" "WAIT(w@/!)" "HOLD(h@/!)" "PROJ(p)"
+        '((sequence "TODO(t)" "NEXT(n)" "ACTV(a)" "WAIT(w@)" "HOLD(h@)" "PROJ(p)"
                     "|"
-                    "DONE(d!)" "KILL(k@/!)")))
+                    "DONE(d)" "KILL(k@)")))
 
   (setq org-todo-keyword-faces
         '(("NEXT" . +org-todo-active)
@@ -110,10 +136,12 @@
   (customize-set-variable 'org-journal-time-format "")
   ;; (customize-set-variable 'org-journal-carryover-items "TODO=\"TODO\"")
   (customize-set-variable 'org-journal-date-format "%Y-%m-%d")
+
   (map! :leader
         (:prefix-map ("n" . "notes")
          (:prefix ("j" . "journal")
           :desc "Today" "t" #'org-journal-today)))
+
   (defun org-journal-today ()
     (interactive)
     (org-journal-new-entry t)))
