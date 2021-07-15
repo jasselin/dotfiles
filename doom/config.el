@@ -25,7 +25,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-one)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -33,8 +33,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
+(setq display-line-numbers-type 'relative)
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -78,23 +77,23 @@
                                    (todo   . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
                                    (tags   . " %i %-20:c")
                                    (search . " %i %-20:c")))
-;; (setq org-agenda-custom-commands
-;;              '(("W" "Weekly review"
-;;                agenda ""
-;;                ((org-agenda-start-day nil)
-;;                 (org-agenda-span 14)
-;;                 (org-agenda-start-on-weekday 1)
-;;                 (org-agenda-start-with-log-mode '(closed clock state))
-;;                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "^\\*\\* DONE "))))))
+  ;; (setq org-agenda-custom-commands
+  ;;              '(("W" "Weekly review"
+  ;;                agenda ""
+  ;;                ((org-agenda-start-day nil)
+  ;;                 (org-agenda-span 14)
+  ;;                 (org-agenda-start-on-weekday 1)
+  ;;                 (org-agenda-start-with-log-mode '(closed clock state))
+  ;;                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "^\\*\\* DONE "))))))
 
   (setq org-agenda-custom-commands
         '(("n" "Agenda"
            (
-               (agenda ""
-               ((org-agenda-span 1)
-                (org-agenda-start-day nil)
-                (org-agenda-start-with-log-mode t)
-                (org-agenda-log-mode-items '(closed clock state))))
+            (agenda ""
+                    ((org-agenda-span 1)
+                     (org-agenda-start-day nil)
+                     (org-agenda-start-with-log-mode t)
+                     (org-agenda-log-mode-items '(closed clock state))))
 
             ;; (todo "" ((org-agenda-overriding-header "Terminé")
             ;;           ))
@@ -104,7 +103,7 @@
 
             (todo "WAIT" ((org-agenda-overriding-header "En attente")))
 
-            (todo "ACTV" ((org-agenda-overriding-header "En cours")))
+            (todo "PROG" ((org-agenda-overriding-header "En cours")))
 
             (todo "NEXT" ((org-agenda-overriding-header "Next")))
             )
@@ -113,13 +112,13 @@
         )
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "ACTV(a)" "WAIT(w@)" "HOLD(h@)" "PROJ(p)"
+        '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)" "PROJ(p)"
                     "|"
                     "DONE(d)" "KILL(k@)")))
 
   (setq org-todo-keyword-faces
         '(("NEXT" . +org-todo-active)
-          ("ACTV" . +org-todo-active)
+          ("PROG" . +org-todo-active)
           ("WAIT" . +org-todo-onhold)
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
@@ -145,5 +144,3 @@
   (defun org-journal-today ()
     (interactive)
     (org-journal-new-entry t)))
-
-;; (add-to-list 'default-frame-alist '(fullscreen . maximized))
