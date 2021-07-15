@@ -123,6 +123,10 @@
           ("HOLD" . +org-todo-onhold)
           ("PROJ" . +org-todo-project)
           ("KILL" . +org-todo-cancel)))
+
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tâches")
+           "* TODO %?\n  %i")))
   )
 
 (use-package! org-journal
