@@ -5,8 +5,8 @@
 
 (setq doom-theme 'doom-one)
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 15)
-      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
+(setq doom-font (font-spec :family "Source Code Pro" :size 14)
+      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14)
       doom-big-font (font-spec :family "Source Code Pro" :size 24))
 
 (custom-set-faces
@@ -29,8 +29,8 @@
 
 (map!
  :nv ";" #'evil-ex
- :nv "é" #'evil-search-forward
- :nv "É" #'evil-search-backward
+ :nv "é" #'evil-search-forward  ;; /
+ :nv "É" #'evil-search-backward ;; Shift + / => ?
  (:leader
   "#" #'previous-buffer
   )
@@ -38,8 +38,7 @@
 
 (map! :map general-override-mode-map
       :n "C-j" #'forward-paragraph
-      :n "C-k" #'backward-paragraph
-      )
+      :n "C-k" #'backward-paragraph)
 
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
@@ -52,14 +51,6 @@
                                    (todo   . " %i %-20:c") ;; Plus de caractères pour afficher la catégorie
                                    (tags   . " %i %-20:c")
                                    (search . " %i %-20:c")))
-  ;; (setq org-agenda-custom-commands
-  ;;              '(("W" "Weekly review"
-  ;;                agenda ""
-  ;;                ((org-agenda-start-day nil)
-  ;;                 (org-agenda-span 14)
-  ;;                 (org-agenda-start-on-weekday 1)
-  ;;                 (org-agenda-start-with-log-mode '(closed clock state))
-  ;;                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'notregexp "^\\*\\* DONE "))))))
 
   (setq org-agenda-custom-commands
         '(("n" "Agenda"
@@ -83,7 +74,6 @@
             (todo "NEXT" ((org-agenda-overriding-header "Next")))
             )
            nil))
-
         )
 
   (setq org-todo-keywords
@@ -101,8 +91,7 @@
 
   (setq org-capture-templates
         '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tâches")
-           "* TODO %?\n  %i")))
-  )
+           "* TODO %?\n  %i"))))
 
 (use-package! org-journal
   :after org
@@ -121,6 +110,6 @@
           :desc "Today" "t" #'org-journal-today)
          :desc "Home" "h" (lambda () (interactive) (find-file "~/org/_index.org"))))
 
-(defun org-journal-today ()
-  (interactive)
-  (org-journal-new-entry t)))
+  (defun org-journal-today ()
+    (interactive)
+    (org-journal-new-entry t)))
