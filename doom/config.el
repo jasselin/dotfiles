@@ -24,8 +24,8 @@
 (setq display-line-numbers-type 'relative)
 (setq company-idle-delay nil)
 
-(setq org-directory "~/org/")
-(setq org-hide-emphasis-markers t)
+(setq org-directory "~/vault/")
+(setq org-hide-emphasis-markers t) ; Enlève les /,*,= autour du texte stylé
 
 (map!
  :nv ";" #'evil-ex
@@ -43,8 +43,7 @@
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
 (after! org
-  (setq org-agenda-files (directory-files-recursively "~/org/" "\\.org$"))
-
+  (setq org-agenda-files (directory-files-recursively "~/vault/" "\\.org$"))
   (setq org-log-done 'time) ; CLOSED timestamp
 
   (setq org-agenda-prefix-format '((agenda . " %i %-20:c%?-12t% s")
@@ -65,7 +64,7 @@
             ;;           ))
 
             (todo "TODO" ((org-agenda-overriding-header "Inbox")
-                          (org-agenda-files '("~/org/inbox.org"))))
+                          (org-agenda-files '("~/vault/inbox.org"))))
 
             (todo "WAIT" ((org-agenda-overriding-header "En attente")))
 
@@ -90,26 +89,51 @@
           ("KILL" . +org-todo-cancel)))
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/org/inbox.org" "Tâches")
+        '(("t" "Todo" entry (file+headline "~/vault/inbox.org" "Tâches")
            "* TODO %?\n  %i"))))
 
-(use-package! org-journal
-  :after org
-  :config
-  ;; (customize-set-variable 'org-journal-dir (concat org-roam-directory "journal"))
-  (customize-set-variable 'org-journal-file-format "%Y-%m-%d.org")
-  (customize-set-variable 'org-journal-date-prefix "#+TITLE: ")
-  (customize-set-variable 'org-journal-time-prefix "* ")
-  (customize-set-variable 'org-journal-time-format "")
-  ;; (customize-set-variable 'org-journal-carryover-items "TODO=\"TODO\"")
-  (customize-set-variable 'org-journal-date-format "%Y-%m-%d")
-
+(use-package! org-roam
+  :init
   (map! :leader
-        (:prefix-map ("n" . "notes")
-         (:prefix ("j" . "journal")
-          :desc "Today" "t" #'org-journal-today)
-         :desc "Home" "h" (lambda () (interactive) (find-file "~/org/_index.org"))))
+        :prefix "n"
+        :desc "org-roam" "l" #'org-roam-buffer-toggle
+        :desc "org-roam-node-insert" "i" #'org-roam-node-insert
+        :desc "org-roam-node-find" "f" #'org-roam-node-find
+        :desc "org-roam-ref-find" "r" #'org-roam-ref-find
+        :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+        :desc "org-roam-capture" "c" #'org-roam-capture
+        :desc "org-roam-dailies-goto-today" "j" #'org-roam-dailies-goto-today
+        :desc "org-roam-dailies-goto-date" "d" #'org-roam-dailies-goto-date
+        :desc "org-roam Index" "h" (lambda () (interactive) (find-file "~/vault/_index.org")))
 
-  (defun org-journal-today ()
-    (interactive)
-    (org-journal-new-entry t)))
+  (setq org-roam-directory (file-truename "~/vault/")
+        org-roam-db-gc-threshold most-positive-fixnum
+        org-roam-v2-ack t)
+
+  (add-to-list 'display-buffer-alist
+               '(("\\*org-roam\\*"
+                  (display-buffer-in-direction)
+                  (direction . right)
+                  (window-width . 0.33)
+                  (window-height . fit-window-to-buffer))))
+
+  :config
+  (setq org-roam-mode-sections
+        (list #'org-roam-backlinks-insert-section
+              #'org-roam-reflinks-insert-section
+              ;; #'org-roam-unlinked-references-insert-section
+              ))
+  (org-roam-setup)
+  (setq org-roam-capture-templates
+        '(("d" "default" plain
+           "%?"
+           :if-new (file+head "${slug}.org"
+                              "#+TITLE: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)))
+  (setq org-roam-capture-ref-templates
+        '(("r" "ref" plain
+           "%?"
+           :if-new (file+head "${slug}.org"
+                              "#+TITLE: ${title}\n")
+           :unnarrowed t))))
