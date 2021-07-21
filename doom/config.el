@@ -45,27 +45,17 @@
 (use-package! vulpea
   :after org)
 
+(load! "agenda.el")
+
 (after! (org vulpea)
   (setq org-agenda-files (directory-files-recursively "~/vault/" "\\.org$"))
   (setq org-log-done 'time) ; CLOSED timestamp
 
-  (defun vulpea-agenda-category ()
-    (let* ((file-name (when buffer-file-name
-                        (file-name-sans-extension
-                         (file-name-nondirectory buffer-file-name))))
-           (title (vulpea-buffer-prop-get "TITLE"))
-           (category (org-get-category)))
-      (or (if (and
-               title
-               (string-equal category file-name))
-              title
-            category)
-          "")))
-
-  (setq org-agenda-prefix-format '((agenda . " %i %-20:(vulpea-agenda-category)%?-12t% s")
-                                   (todo   . " %i %-20:(vulpea-agenda-category)") ;; Plus de caractères pour afficher la catégorie
-                                   (tags   . " %i %-20:(vulpea-agenda-category)")
-                                   (search . " %i %-20:(vulpea-agenda-category)")))
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %(vulpea-agenda-category 12)%?-12t% s")
+          (todo . " %i %(vulpea-agenda-category 12) ")
+          (tags . " %i %(vulpea-agenda-category 12) ")
+          (search . " %i %(vaulpea-agenda-category 12) ")))
 
   (setq org-agenda-custom-commands
         '(("n" "Agenda"
