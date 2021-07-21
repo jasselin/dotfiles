@@ -135,12 +135,12 @@
         '(("d" "default" plain
            "%?"
            :if-new (file+head "${slug}.org"
-                              "#+TITLE: ${title}\n")
+                              "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)))
   (setq org-roam-capture-ref-templates
         '(("r" "ref" plain
            "%?"
            :if-new (file+head "${slug}.org"
-                              "#+TITLE: ${title}\n")
+                              "#+title: ${title}\n")
            :unnarrowed t))))
