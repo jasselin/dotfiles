@@ -50,12 +50,13 @@
 (after! (org vulpea)
   (setq org-agenda-files (directory-files-recursively "~/vault/" "\\.org$"))
   (setq org-log-done 'time) ; CLOSED timestamp
+  (add-to-list 'org-tags-exclude-from-inheritance "project")
 
   (setq org-agenda-prefix-format
-        '((agenda . " %i %(vulpea-agenda-category 12)%?-12t% s")
-          (todo . " %i %(vulpea-agenda-category 12) ")
-          (tags . " %i %(vulpea-agenda-category 12) ")
-          (search . " %i %(vaulpea-agenda-category 12) ")))
+        '((agenda . " %i %(vulpea-agenda-category 20)%?-20t% s")
+          (todo . " %i %(vulpea-agenda-category 20) ")
+          (tags . " %i %(vulpea-agenda-category 20) ")
+          (search . " %i %(vaulpea-agenda-category 20) ")))
 
   (setq org-agenda-custom-commands
         '(("n" "Agenda"
