@@ -3,11 +3,15 @@
 (setq user-full-name "Jason Asselin"
       user-mail-address "asselin.jason@gmail.com")
 
-(setq doom-theme 'doom-one)
+(setq doom-theme 'doom-dracula)
 
 (setq doom-font (font-spec :family "Source Code Pro" :size 14)
       doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14)
       doom-big-font (font-spec :family "Source Code Pro" :size 24))
+
+(after! org
+  (custom-set-faces!
+    '(org-document-title :height 1.4)))
 
 (custom-set-faces
  '(org-level-1 ((t (:inherit outline-1 :height 1.2))))
@@ -17,15 +21,12 @@
  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
  )
 
-(after! org
-  (custom-set-faces!
-    '(org-document-title :height 1.4)))
-
 (setq display-line-numbers-type 'relative)
 (setq company-idle-delay nil)
 
 (setq org-directory "~/vault/")
 (setq org-hide-emphasis-markers t) ; Enlève les /,*,= autour du texte stylé
+(setq org-ellipsis " ▼")
 
 (map!
  :nv ";" #'evil-ex
@@ -83,7 +84,7 @@
         )
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)" "PROJ(p)"
+        '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)"
                     "|"
                     "DONE(d)" "KILL(k@)")))
 
@@ -92,7 +93,6 @@
           ("PROG" . +org-todo-active)
           ("WAIT" . +org-todo-onhold)
           ("HOLD" . +org-todo-onhold)
-          ("PROJ" . +org-todo-project)
           ("KILL" . +org-todo-cancel)))
 
   (setq org-capture-templates
