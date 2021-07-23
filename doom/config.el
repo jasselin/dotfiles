@@ -48,6 +48,125 @@
 
 (load! "agenda.el")
 
+(use-package! org-super-agenda
+  :config
+  (add-hook! 'after-init-hook 'org-super-agenda-mode)
+  (setq org-super-agenda-header-map (make-sparse-keymap))
+  (setq org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-include-deadlines t
+        org-agenda-include-diary nil
+        org-agenda-block-separator nil
+        org-agenda-compact-blocks t
+        org-agenda-start-with-log-mode t))
+
+;; (require 'org-super-agenda)             ;
+(setq org-agenda-custom-commands
+      '(
+        ("w" "Agenda (travail)"
+         ((agenda "" ((org-agenda-span 1)
+                      (org-agenda-start-day nil) ;
+                      (org-super-agenda-groups
+                       '(
+                         (:discard (:tag ("Personnel" "Achats")))
+
+                         (:name "Aujourd'hui"
+                                :time-grid t
+                                :date today
+                                :scheduled today
+                                :deadline today
+                                :order 1)
+
+                         (:name "En retard"
+                                :time-grid t
+                                :scheduled past
+                                :deadline past
+                                :order 2)
+                         ))))
+
+          (todo "TODO" ((org-agenda-overriding-header "")
+                        (org-super-agenda-groups
+                         '(
+                           (:name "Inbox"
+                            :anything)
+                           ))
+                        (org-agenda-files '("~/vault/inbox.org"))))
+
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '(
+                          (:discard (:tag ("Personnel" "Achats")))
+
+                          (:name "Priorité"
+                           :priority "A"
+                           :order 2)
+
+                          (:name "En attente"
+                           :todo "WAIT"
+                           :order 3)
+
+                          (:name "En cours"
+                           :todo "PROG"
+                           :order 4)
+
+                          (:name "Next"
+                           :todo "NEXT"
+                           :order 5)
+
+                          (:discard (:anything t))
+
+                          (:name "Dump"
+                           :anything t
+                           :order 6)
+                          )))
+                   )
+          ))
+
+        ("p" "Agenda (personnel)"
+         ((agenda "" ((org-agenda-span 1)
+                      (org-agenda-start-day nil) ;
+                      (org-super-agenda-groups
+                       '(
+                         (:discard (:not (:tag ("Personnel" "Achats"))))
+
+                         (:name "Aujourd'hui"
+                                :time-grid t
+                                :date today
+                                :scheduled today
+                                :deadline today
+                                :order 1)
+
+                         (:name "En retard"
+                                :time-grid t
+                                :scheduled past
+                                :deadline past
+                                :order 2)
+                         ))))
+
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '(
+                          ;;(:discard (:not (:tag ("Personnel" "Achats" "Emacs"))))
+
+                          (:name "Personnel"
+                           :tag "Personnel"
+                           :order 2)
+
+                          (:name "Achats"
+                           :tag "Achats"
+                           :order 3)
+
+                          (:name "Emacs"
+                           :tag "Emacs"
+                           :order 4)
+
+                          (:discard (:anything t))
+
+                          )))
+                   )
+          ))
+        ))
+
 (after! (org vulpea)
   (setq org-agenda-files (directory-files-recursively "~/vault/" "\\.org$"))
   (setq org-log-done 'time) ; CLOSED timestamp
@@ -59,29 +178,29 @@
           (tags . " %i %(vulpea-agenda-category 20) ")
           (search . " %i %(vaulpea-agenda-category 20) ")))
 
-  (setq org-agenda-custom-commands
-        '(("n" "Agenda"
-           (
-            (agenda ""
-                    ((org-agenda-span 1)
-                     (org-agenda-start-day nil)
-                     (org-agenda-start-with-log-mode t)
-                     (org-agenda-log-mode-items '(closed clock state))))
+  ;; (setq org-agenda-custom-commands
+  ;;       '(("n" "Agenda"
+  ;;          (
+  ;;           (agenda ""
+  ;;                   ((org-agenda-span 1)
+  ;;                    (org-agenda-start-day nil)
+  ;;                    (org-agenda-start-with-log-mode t)
+  ;;                    (org-agenda-log-mode-items '(closed clock state))))
 
-            ;; (todo "" ((org-agenda-overriding-header "Terminé")
-            ;;           ))
+  ;;           ;; (todo "" ((org-agenda-overriding-header "Terminé")
+  ;;           ;;           ))
 
-            (todo "TODO" ((org-agenda-overriding-header "Inbox")
-                          (org-agenda-files '("~/vault/inbox.org"))))
+  ;;           (todo "TODO" ((org-agenda-overriding-header "Inbox")
+  ;;                         (org-agenda-files '("~/vault/inbox.org"))))
 
-            (todo "WAIT" ((org-agenda-overriding-header "En attente")))
+  ;;           (todo "WAIT" ((org-agenda-overriding-header "En attente")))
 
-            (todo "PROG" ((org-agenda-overriding-header "En cours")))
+  ;;           (todo "PROG" ((org-agenda-overriding-header "En cours")))
 
-            (todo "NEXT" ((org-agenda-overriding-header "Next")))
-            )
-           nil))
-        )
+  ;;           (todo "NEXT" ((org-agenda-overriding-header "Next")))
+  ;;           )
+  ;;          nil))
+  ;;       )
 
   (setq org-todo-keywords
         '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)"
