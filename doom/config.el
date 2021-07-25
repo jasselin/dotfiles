@@ -43,9 +43,6 @@
 
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
-(use-package! vulpea
-  :after org)
-
 (load! "agenda.el")
 
 (use-package! org-super-agenda
@@ -167,7 +164,7 @@
           ))
         ))
 
-(after! (org vulpea)
+(after! org
   (setq org-agenda-files (directory-files-recursively "~/vault/" "\\.org$"))
   (setq org-log-done 'time) ; CLOSED timestamp
   (add-to-list 'org-tags-exclude-from-inheritance "project")
@@ -220,6 +217,11 @@
 
 (use-package! org-roam
   :init
+  (setq org-roam-v2-ack t)
+
+  (setq org-roam-directory (file-truename "~/vault/")
+        org-roam-db-gc-threshold most-positive-fixnum)
+
   (map! :leader
         :prefix "n"
         :desc "org-roam" "l" #'org-roam-buffer-toggle
@@ -231,10 +233,6 @@
         :desc "org-roam-dailies-goto-today" "j" #'org-roam-dailies-goto-today
         :desc "org-roam-dailies-goto-date" "d" #'org-roam-dailies-goto-date
         :desc "org-roam Index" "h" (lambda () (interactive) (find-file "~/vault/_index.org")))
-
-  (setq org-roam-directory (file-truename "~/vault/")
-        org-roam-db-gc-threshold most-positive-fixnum
-        org-roam-v2-ack t)
 
   (add-to-list 'display-buffer-alist
                '(("\\*org-roam\\*"
