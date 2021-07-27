@@ -261,3 +261,7 @@
            :if-new (file+head "${slug}.org"
                               "#+title: ${title}\n")
            :unnarrowed t))))
+
+(autoload 'asp-mode "~/.doom.d/asp-mode")
+(setq auto-mode-alist
+      (cons '("\\.asp\\'" . asp-mode) auto-mode-alist))
