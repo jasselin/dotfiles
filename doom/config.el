@@ -27,6 +27,8 @@
 (setq org-directory "~/vault/")
 (setq org-hide-emphasis-markers t) ; Enlève les /,*,= autour du texte stylé
 (setq org-ellipsis " ▼")
+(setq org-log-into-drawer t)
+(setq org-startup-folded 'showall)
 
 (map!
  :nv ";" #'evil-ex
@@ -40,6 +42,11 @@
 (map! :map general-override-mode-map
       :n "C-j" #'forward-paragraph
       :n "C-k" #'backward-paragraph)
+
+(map! :leader
+      :prefix "m"
+      :desc "org-add-note" "z" #'org-add-note
+)
 
 (remove-hook 'doom-first-input-hook #'evil-snipe-mode)
 
