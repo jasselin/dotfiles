@@ -35,6 +35,11 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(use-package counsel
+  :ensure t
+  :after ivy
+  :config (counsel-mode))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
