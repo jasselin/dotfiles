@@ -1,3 +1,4 @@
 *.swp
 vim/*
 emacs/*
+.emacs.d/*
