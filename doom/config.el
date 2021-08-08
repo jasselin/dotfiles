@@ -5,9 +5,9 @@
 
 (setq doom-theme 'doom-dracula)
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 14)
-      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14)
-      doom-big-font (font-spec :family "Source Code Pro" :size 24))
+(setq doom-font (font-spec :family "Fira Code" :size 14)
+      doom-variable-pitch-font (font-spec :family "Fira Code" :size 14)
+      doom-big-font (font-spec :family "Fira Code" :size 24))
 
 (after! org
   (custom-set-faces!
