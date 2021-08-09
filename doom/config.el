@@ -275,4 +275,4 @@
 (setq auto-mode-alist
       (cons '("\\.asp\\'" . asp-mode) auto-mode-alist))
 
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
