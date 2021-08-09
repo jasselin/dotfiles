@@ -29,6 +29,7 @@
 (setq org-ellipsis " ▼")
 (setq org-log-into-drawer t)
 (setq org-startup-folded 'showall)
+(setq org-deadline-warning-days 0)
 
 (map!
  :nv ";" #'evil-ex
@@ -272,3 +273,5 @@
 (autoload 'asp-mode "~/.doom.d/asp-mode")
 (setq auto-mode-alist
       (cons '("\\.asp\\'" . asp-mode) auto-mode-alist))
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
