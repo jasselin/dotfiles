@@ -30,6 +30,7 @@
 (setq org-log-into-drawer t)
 (setq org-startup-folded 'showall)
 (setq org-deadline-warning-days 0)
+(setq org-cycle-separator-lines 0)
 
 (map!
  :nv ";" #'evil-ex
