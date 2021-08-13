@@ -209,7 +209,7 @@
   ;;       )
 
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)"
+        '((sequence "TODO(t)" "NEXT(n)" "PROG(r)" "WAIT(w@)" "HOLD(h@)" "WISH(s)"
                     "|"
                     "DONE(d)" "KILL(k@)")))
 
@@ -217,6 +217,7 @@
         '(("NEXT" . +org-todo-active)
           ("PROG" . +org-todo-active)
           ("WAIT" . +org-todo-onhold)
+          ("WISH" . "purple")
           ("HOLD" . +org-todo-onhold)
           ("KILL" . +org-todo-cancel)))
 
