@@ -276,4 +276,6 @@
 (setq auto-mode-alist
       (cons '("\\.asp\\'" . asp-mode) auto-mode-alist))
 
-;;(add-to-list 'default-frame-alist '(fullscreen . maximized))
+;; Disable mandatory documentation warning
+ (setq-hook! 'emacs-lisp-mode-hook
+   flycheck-disabled-checkers '(emacs-lisp-checkdoc))
