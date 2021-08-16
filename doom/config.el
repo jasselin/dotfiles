@@ -25,7 +25,7 @@
 (setq company-idle-delay nil)
 
 (setq org-directory "~/vault/")
-(setq org-hide-emphasis-markers t) ; Enlève les /,*,= autour du texte stylé
+;;(setq org-hide-emphasis-markers t) ; Enlève les /,*,= autour du texte stylé
 (setq org-ellipsis " ▼")
 (setq org-log-into-drawer t)
 (setq org-startup-folded 'showall)
@@ -107,12 +107,12 @@
                            :priority "A"
                            :order 2)
 
-                          (:name "En attente"
-                           :todo "WAIT"
-                           :order 3)
-
                           (:name "En cours"
                            :todo "PROG"
+                           :order 3)
+
+                          (:name "En attente"
+                           :todo "WAIT"
                            :order 4)
 
                           (:name "Next"
@@ -221,7 +221,7 @@
           ("KILL" . +org-todo-cancel)))
 
   (setq org-capture-templates
-        '(("t" "Todo" entry (file+headline "~/vault/inbox.org" "Tâches")
+        '(("t" "Todo" entry (file+headline "~/vault/inbox.org" nil)
            "* TODO %?\n  %i"))))
 
 (use-package! org-roam
